@@ -1,38 +1,39 @@
-var inp = document.querySelector('.taskname');
-var list = document.querySelector('.tasklist');
-var addTask = document.querySelector('.btnTask')
-var taskClear = document.querySelector('.btnClear')
+var inp = document.querySelector(".taskname");
+var list = document.querySelector(".tasklist");
+var addTask = document.querySelector(".btnTask");
+var taskClear = document.querySelector(".btnClear");
 var taskList = [];
 
 function render(elemments) {
   list.innerHTML = "";
   elemments.forEach(e => {
-    let newEl = document.createElement('li');
+    let newEl = document.createElement("li");
     newEl.innerHTML = e;
-    list.appendChild(newEl);
     newEl.classList.add("list-group-item");
+    list.appendChild(newEl);
   });
 }
-addTask.addEventListener('click', e => {
+addTask.addEventListener("click", e => {
   if (inp.value !== "") {
     taskList.push(inp.value);
     inp.value = "";
+    render(taskList);
     taskClear.style.display = "block";
-    render(taskList)
-    localStorage.setItem('mylist', list.innerHTML)
-  }else{
-    alert('Please input your task')
+    localStorage.setItem("mylist", JSON.stringify(taskList));
+  } else {
+    alert("Please input your task");
   }
 });
-var saved = localStorage.getItem('mylist');
+let saved = localStorage.getItem('mylist');
 if (saved) {
-  list.innerHTML = saved;
+  taskList = JSON.parse(localStorage.getItem("mylist"));
+  render(taskList);
 }else{
   taskClear.style.display = "none";
 }
-taskClear.addEventListener('click', function () {
+taskClear.addEventListener("click", function() {
   localStorage.clear();
-  list.innerHTML ="";
+  list.innerHTML = "";
   taskList = [];
   taskClear.style.display = "none";
 });
